@@ -1,0 +1,21 @@
+#pragma kernel function
+
+RWStructuredBuffer<float2> positions;
+uint resolution;
+float step_size;
+
+[numthreads(8, 8, 1)]
+void function (uint3 id: SV_DispatchThreadID)
+{
+}
+
+float2 get_uv (uint3 id) {
+    return (id.xy + 0.5) * step_size - 1.0;
+}
+
+void set_position (uint3 id, float2 position) {
+    if (id.x < resolution && id.y < resolution)
+    {
+        positions[id.x + id.y * resolution] = position;
+    }
+}
