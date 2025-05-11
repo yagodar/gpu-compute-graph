@@ -4,11 +4,6 @@ RWStructuredBuffer<float2> positions;
 uint resolution;
 float step_size;
 
-[numthreads(8, 8, 1)]
-void function (uint3 id: SV_DispatchThreadID)
-{
-}
-
 float2 get_uv (uint3 id) {
     return (id.xy + 0.5) * step_size - 1.0;
 }
@@ -18,4 +13,18 @@ void set_position (uint3 id, float2 position) {
     {
         positions[id.x + id.y * resolution] = position;
     }
+}
+
+float2 get_a_1_a_real_position (float n) {
+    float3 p;
+    p.x = n;
+    p.y = 0.0f; //TODO
+    return p;
+}
+
+[numthreads(8, 8, 1)]
+void function (uint3 id: SV_DispatchThreadID)
+{
+    float2 uv = get_uv(id);
+    set_position(id, get_a_1_a_real_position(uv.x));
 }
